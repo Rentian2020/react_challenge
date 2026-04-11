@@ -1,30 +1,31 @@
-const schedule = {
-  title: "CS Courses for 2018-2019"
-};
+import Banner from "./components/Banner";
+import CourseList from "./components/CourseList";
 
-const App = () => {
-  return (
-    <div style={styles.page}>
-      <h1 style={styles.title}>{schedule.title}</h1>
-    </div>
-  );
+const schedule = {
+  title: "CS Courses for 2018-2019",
+  courses: {
+    F101: { term: "Fall", number: "101", meets: "MWF 11:00-11:50", title: "Computer Science: Concepts, Philosophy, and Connections" },
+    F110: { term: "Fall", number: "110", meets: "MWF 10:00-10:50", title: "Intro Programming for non-majors" },
+    S313: { term: "Spring", number: "313", meets: "TuTh 15:30-16:50", title: "Tangible Interaction Design and Learning" },
+    S314: { term: "Spring", number: "314", meets: "TuTh 9:30-10:50", title: "Tech & Human Interaction" },
+  }
 };
 
 const styles = {
   page: {
+    maxWidth: "1000px",
+    margin: "0 auto",
     padding: "40px",
-    background: "#f8f9fb",
-    minHeight: "100vh"
+    background: "#f3f4f6",
+    minHeight: "100vh",
   },
-
-  title: {
-    fontSize: "2rem",
-    fontWeight: "600",
-    color: "#1a1a1a",
-    borderBottom: "2px solid #e5e7eb",
-    paddingBottom: "10px",
-    margin: 0
-  }
 };
+
+const App = () => (
+  <div style={styles.page}>
+    <Banner title={schedule.title} />
+    <CourseList courses={schedule.courses} />
+  </div>
+);
 
 export default App;
