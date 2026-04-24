@@ -1,11 +1,11 @@
-type Course = {
+export type Course = {
   term: string;
   number: string;
   meets: string;
   title: string;
 };
 
-type Courses = Record<string, Course>;
+export type Courses = Record<string, Course>;
 
 const styles = {
   list: {

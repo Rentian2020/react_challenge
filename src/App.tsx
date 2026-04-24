@@ -1,5 +1,5 @@
 import Banner from './components/Banner';
-import CourseList from './components/CourseList';
+import TermPage from './components/TermPage';
 import { useJsonQuery } from './utilities/fetch';
 
 const URL = "https://courses.cs.northwestern.edu/394/guides/data/cs-courses.php";
@@ -29,9 +29,10 @@ const App = () => {
   return (
     <div>
       <Banner title={schedule.title} />
-      <CourseList courses={schedule.courses} />
+      <TermPage courses={schedule.courses} />
     </div>
   );
 };
 
 export default App;
+
