@@ -1,4 +1,5 @@
 import CourseCard from './CourseCard';
+import getConflict from '../utilities/timeConflict';
 
 export type Course = {
   term: string;
@@ -25,14 +26,20 @@ interface CourseListProps {
 
 const CourseList = ({ courses, selectedCourses, toggle }: CourseListProps) => (
   <div style={styles.list}>
-    {Object.entries(courses).map(([id, course]) => (
-      <CourseCard
-        key={id}
-        course={course}
-        selected={selectedCourses.includes(course)}
-        select={toggle}
-      />
-    ))}
+    {Object.entries(courses).map(([id, course]) => {
+      const isSelected = selectedCourses.includes(course);
+      const isConflicted = !isSelected && getConflict(course, selectedCourses);
+      
+      return (
+        <CourseCard
+          key = {id}
+          course = {course}
+          selected = {isSelected}
+          conflicted = {isConflicted}
+          select={toggle}
+        />
+      );
+    })}
   </div>
 );
 

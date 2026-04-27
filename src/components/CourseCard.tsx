@@ -3,6 +3,7 @@ import type { Course } from './CourseList';
 interface CourseCardProps {
   course: Course;
   selected: boolean;
+  conflicted: boolean;
   select: (course: Course) => void;
 }
 
@@ -35,15 +36,17 @@ const styles = {
   },
 };
 
-const CourseCard = ({ course, selected, select }: CourseCardProps) => (
+const CourseCard = ({ course, selected, conflicted, select }: CourseCardProps) => (
   <div
     style={{
       ...styles.card,
       border: selected ? "2px solid #2563eb" : "2px solid transparent",
       background: selected ? "#eff6ff" : "white",
+      opacity: conflicted ? 0.5 : 1,
+      cursor: conflicted ? "not-allowed" : "pointer",
     }}
-    onClick={() => select(course)}
-    onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; }}
+    onClick={() => !conflicted && select(course)}
+    onMouseEnter={(e) => { if(!conflicted) e.currentTarget.style.transform = "translateY(-4px)"; }}
     onMouseLeave={(e) => { e.currentTarget.style.transform = "none"; }}
   >
     <span style={styles.badge}>
@@ -51,6 +54,7 @@ const CourseCard = ({ course, selected, select }: CourseCardProps) => (
     </span>
     <p style={styles.courseTitle}>{course.title}</p>
     <p style={styles.meets}>{course.meets}</p>
+    {conflicted && <p style={{ color: "#dc2626", fontSize: "15px", marginTop: "6px" }}>✕ Time conflict</p>}
   </div>
 );
 
