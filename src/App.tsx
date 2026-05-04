@@ -1,21 +1,14 @@
 import Banner from './components/Banner';
 import TermPage from './components/TermPage';
 import { useJsonQuery } from './utilities/fetch';
+import type { Course } from './types/courses';
 
 const URL = "https://courses.cs.northwestern.edu/394/guides/data/cs-courses.php";
-
-type Course = {
-  term: string;
-  number: string;
-  meets: string;
-  title: string;
-};
 
 type Schedule = {
   title: string;
   courses: Record<string, Course>;
 };
-
 
 const App = () => {
   const [json, isLoading, error] = useJsonQuery(URL);
@@ -35,4 +28,3 @@ const App = () => {
 };
 
 export default App;
-

@@ -1,4 +1,4 @@
-import type { Course } from '../components/CourseList';
+import type { Course } from '../types/courses';
 
 interface TimeRange{
     start: number;

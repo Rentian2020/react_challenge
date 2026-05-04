@@ -1,11 +1,14 @@
 import { useState } from "react";
 import TermSelector from "./TermSelector";
 import CourseList from "./CourseList";
-import type { Courses, Course } from './CourseList';
+import type { Course } from '../types/courses';
 import Modal from './Modal';
 import CourseEditor from "./CourseEditor";
 
-const terms = ["Fall", "Winter", "Spring"];
+type Courses = Record<string, Course>;
+
+
+const terms = ["Fall", "Winter", "Spring", "Summer"];
 
 const toggleList = <T,>(x: T, lst: T[]): T[] => (
     lst.includes(x) ? lst.filter(y => y !== x) : [...lst, x]

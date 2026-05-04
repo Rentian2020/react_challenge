@@ -1,12 +1,6 @@
 import CourseCard from './CourseCard';
 import getConflict from '../utilities/timeConflict';
-
-export type Course = {
-  term: string;
-  number: string;
-  meets: string;
-  title: string;
-};
+import type { Course } from '../types/courses';
 
 export type Courses = Record<string, Course>;
 

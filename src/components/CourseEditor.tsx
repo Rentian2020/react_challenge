@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import type { Course } from './CourseList';
+import { courseResolver, type Course } from '../types/courses';
 
 interface CourseEditorProps {
     course: Course;
@@ -8,7 +8,7 @@ interface CourseEditorProps {
 }
 
 const CourseEditor = ({ course, onCancel, onSubmit: _onSubmit }: CourseEditorProps) => {
-    const {register, handleSubmit} = useForm<Course>({
+    const { register, handleSubmit, formState: { errors } } = useForm<Course>({
         defaultValues: {
             term: course.term,
             number: course.number,
@@ -16,6 +16,7 @@ const CourseEditor = ({ course, onCancel, onSubmit: _onSubmit }: CourseEditorPro
             title: course.title,
         },
         mode: 'onChange',
+        resolver: courseResolver,
     });
 
     return (
@@ -34,26 +35,37 @@ const CourseEditor = ({ course, onCancel, onSubmit: _onSubmit }: CourseEditorPro
                 Edit course
             </h2>
 
-            {(["term", "number", "meets", "title"] as const).map((field) => (
-                <div key={field} style={{ marginBottom: "14px" }}>
-                    <label style={{ display: "block", fontSize: "13px", color: "#6b7280", marginBottom: "6px", textTransform: "capitalize" }}>
-                        {field}
-                    </label>
-                    <input
-                        type="text"
-                        {...register(field)}
-                        style={{
-                            width: "100%",
-                            boxSizing: "border-box",
-                            padding: "8px 12px",
-                            borderRadius: "8px",
-                            border: "1px solid #d1d5db",
-                            fontSize: "14px",
-                            outline: "none",
-                        }}
-                    />
-                </div>
-            ))}
+            <label style={{ display: "block", marginBottom: "14px" }}>
+                <span style={{ fontSize: "13px", color: "#6b7280" }}>Title</span>
+                {errors.title && <span style={{ color: "red", fontSize: "12px", marginLeft: "8px", fontStyle: "italic" }}>{errors.title.message}</span>}
+                <input type="text" {...register("title")}
+                    style={{ display: "block", width: "100%", boxSizing: "border-box", padding: "8px 12px", borderRadius: "8px", border: errors.title ? "1px solid red" : "1px solid #d1d5db", fontSize: "14px", marginTop: "6px" }}
+                />
+            </label>
+
+            <label style={{ display: "block", marginBottom: "14px" }}>
+                <span style={{ fontSize: "13px", color: "#6b7280" }}>Term</span>
+                {errors.term && <span style={{ color: "red", fontSize: "12px", marginLeft: "8px", fontStyle: "italic" }}>{errors.term.message}</span>}
+                <input type="text" {...register("term")}
+                    style={{ display: "block", width: "100%", boxSizing: "border-box", padding: "8px 12px", borderRadius: "8px", border: errors.term ? "1px solid red" : "1px solid #d1d5db", fontSize: "14px", marginTop: "6px" }}
+                />
+            </label>
+
+            <label style={{ display: "block", marginBottom: "14px" }}>
+                <span style={{ fontSize: "13px", color: "#6b7280" }}>Number</span>
+                {errors.number && <span style={{ color: "red", fontSize: "12px", marginLeft: "8px", fontStyle: "italic" }}>{errors.number.message}</span>}
+                <input type="text" {...register("number")}
+                    style={{ display: "block", width: "100%", boxSizing: "border-box", padding: "8px 12px", borderRadius: "8px", border: errors.number ? "1px solid red" : "1px solid #d1d5db", fontSize: "14px", marginTop: "6px" }}
+                />
+            </label>
+
+            <label style={{ display: "block", marginBottom: "14px" }}>
+                <span style={{ fontSize: "13px", color: "#6b7280" }}>Meets</span>
+                {errors.meets && <span style={{ color: "red", fontSize: "12px", marginLeft: "8px", fontStyle: "italic" }}>{errors.meets.message}</span>}
+                <input type="text" {...register("meets")}
+                    style={{ display: "block", width: "100%", boxSizing: "border-box", padding: "8px 12px", borderRadius: "8px", border: errors.meets ? "1px solid red" : "1px solid #d1d5db", fontSize: "14px", marginTop: "6px" }}
+                />
+            </label>
 
             <button
                 type="button"
