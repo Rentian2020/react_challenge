@@ -10,7 +10,7 @@ interface CourseEditorProps {
 }
 
 const CourseEditor = ({ course, courseId, onCancel, onSubmit }: CourseEditorProps) => {
-    const { register, handleSubmit, formState: { errors } } = useForm<Course>({
+    const { register, handleSubmit, formState: { errors, isDirty } } = useForm<Course>({
         defaultValues: {
             term: course.term,
             number: course.number,
@@ -74,8 +74,10 @@ const CourseEditor = ({ course, courseId, onCancel, onSubmit }: CourseEditorProp
                 />
             </label>
 
-            <button type="submit" style={{ marginTop: "8px", width: "100%", padding: "9px", borderRadius: "8px", border: "none", background: "#2563eb", color: "white", fontSize: "14px", fontWeight: 600, cursor: "pointer" }}>
-                Save
+            <button type="submit" 
+                    disabled={!isDirty}
+                    style={{ marginTop: "8px", width: "100%", padding: "9px", borderRadius: "8px", border: "none", background: "#2563eb", color: "white", fontSize: "14px", fontWeight: 600, cursor: isDirty ? "pointer" : "not-allowed", opacity: isDirty ? 1 : 0.5 }}>
+                Submit
             </button>
             <button type="button" onClick={onCancel} style={{ marginTop: "8px", width: "100%", padding: "9px", borderRadius: "8px", border: "1px solid #d1d5db", background: "white", fontSize: "14px", fontWeight: 600, cursor: "pointer", color: "#374151" }}>
                 Cancel

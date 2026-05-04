@@ -34,7 +34,7 @@ const TermPage = ({ courses }: { courses: Courses }) => {
         course = {editing.course}
         courseId = {editing.courseId}
         onCancel = {() => setEditingCourse(null)}
-        onSubmit = {() => {}}
+        onSubmit = {() => setEditingCourse(null)}
       />
     );
   }
