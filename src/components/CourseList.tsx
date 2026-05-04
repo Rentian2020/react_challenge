@@ -22,9 +22,10 @@ interface CourseListProps {
   courses: Courses;
   selectedCourses: Course[];
   toggle: (course: Course) => void;
+  onEdit: (course: Course) => void;
 }
 
-const CourseList = ({ courses, selectedCourses, toggle }: CourseListProps) => (
+const CourseList = ({ courses, selectedCourses, toggle, onEdit}: CourseListProps) => (
   <div style={styles.list}>
     {Object.entries(courses).map(([id, course]) => {
       const isSelected = selectedCourses.includes(course);
@@ -36,11 +37,13 @@ const CourseList = ({ courses, selectedCourses, toggle }: CourseListProps) => (
           course = {course}
           selected = {isSelected}
           conflicted = {isConflicted}
-          select={toggle}
+          select = {toggle}
+          onEdit = {onEdit}
         />
       );
     })}
   </div>
 );
+
 
 export default CourseList;

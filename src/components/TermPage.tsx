@@ -3,6 +3,7 @@ import TermSelector from "./TermSelector";
 import CourseList from "./CourseList";
 import type { Courses, Course } from './CourseList';
 import Modal from './Modal';
+import CourseEditor from "./CourseEditor";
 
 const terms = ["Fall", "Winter", "Spring"];
 
@@ -14,6 +15,7 @@ const TermPage = ({ courses }: { courses: Courses }) => {
   const [selectedTerm, setSelectedTerm] = useState("Fall");
   const [selectedCourses, setSelectedCourses] = useState<Course[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [editing, setEditingCourse] = useState<Course | null>(null);
 
   const filtered = Object.fromEntries(
     Object.entries(courses).filter(([, c]) => c.term === selectedTerm)
@@ -22,6 +24,16 @@ const TermPage = ({ courses }: { courses: Courses }) => {
   const toggle = (course: Course) => {
     setSelectedCourses((prev) => toggleList(course, prev));
   };
+
+  if(editing){
+    return (
+      <CourseEditor
+        course = {editing}
+        onCancel = {() => setEditingCourse(null)}
+        onSubmit = {() => {}}
+      />
+    );
+  }
 
   return (
     <div>
@@ -35,6 +47,7 @@ const TermPage = ({ courses }: { courses: Courses }) => {
         courses={filtered}
         selectedCourses={selectedCourses}
         toggle={toggle}
+        onEdit={(course) => setEditingCourse(course)}
       />
 
       <button
