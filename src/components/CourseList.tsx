@@ -16,7 +16,7 @@ interface CourseListProps {
   courses: Courses;
   selectedCourses: Course[];
   toggle: (course: Course) => void;
-  onEdit: (course: Course) => void;
+  onEdit: (courseId: string, course: Course) => void;
 }
 
 const CourseList = ({ courses, selectedCourses, toggle, onEdit}: CourseListProps) => (
@@ -32,7 +32,7 @@ const CourseList = ({ courses, selectedCourses, toggle, onEdit}: CourseListProps
           selected = {isSelected}
           conflicted = {isConflicted}
           select = {toggle}
-          onEdit = {onEdit}
+          onEdit={() => onEdit(id, course)}
         />
       );
     })}

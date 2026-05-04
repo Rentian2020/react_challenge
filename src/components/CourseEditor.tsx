@@ -1,13 +1,15 @@
 import { useForm } from 'react-hook-form';
 import { courseResolver, type Course } from '../types/courses';
+import { updateData } from '../utilities/firebase';
 
 interface CourseEditorProps {
     course: Course;
+    courseId: string;
     onCancel: () => void;
     onSubmit: () => void;
 }
 
-const CourseEditor = ({ course, onCancel, onSubmit: _onSubmit }: CourseEditorProps) => {
+const CourseEditor = ({ course, courseId, onCancel, onSubmit }: CourseEditorProps) => {
     const { register, handleSubmit, formState: { errors } } = useForm<Course>({
         defaultValues: {
             term: course.term,
@@ -19,9 +21,14 @@ const CourseEditor = ({ course, onCancel, onSubmit: _onSubmit }: CourseEditorPro
         resolver: courseResolver,
     });
 
+    const onSave = async (data: Course) => {
+        await updateData(`/courses/${courseId}`, data);
+        onSubmit();
+    };
+
     return (
         <form
-            onSubmit={handleSubmit(() => {})}
+            onSubmit={handleSubmit(onSave)}
             style={{
                 background: "white",
                 borderRadius: "14px",
@@ -67,22 +74,10 @@ const CourseEditor = ({ course, onCancel, onSubmit: _onSubmit }: CourseEditorPro
                 />
             </label>
 
-            <button
-                type="button"
-                onClick={onCancel}
-                style={{
-                    marginTop: "8px",
-                    width: "100%",
-                    padding: "9px",
-                    borderRadius: "8px",
-                    border: "1px solid #d1d5db",
-                    background: "white",
-                    fontSize: "14px",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    color: "#374151",
-                }}
-            >
+            <button type="submit" style={{ marginTop: "8px", width: "100%", padding: "9px", borderRadius: "8px", border: "none", background: "#2563eb", color: "white", fontSize: "14px", fontWeight: 600, cursor: "pointer" }}>
+                Save
+            </button>
+            <button type="button" onClick={onCancel} style={{ marginTop: "8px", width: "100%", padding: "9px", borderRadius: "8px", border: "1px solid #d1d5db", background: "white", fontSize: "14px", fontWeight: 600, cursor: "pointer", color: "#374151" }}>
                 Cancel
             </button>
         </form>

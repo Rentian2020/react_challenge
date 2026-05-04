@@ -18,7 +18,7 @@ const TermPage = ({ courses }: { courses: Courses }) => {
   const [selectedTerm, setSelectedTerm] = useState("Fall");
   const [selectedCourses, setSelectedCourses] = useState<Course[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [editing, setEditingCourse] = useState<Course | null>(null);
+  const [editing, setEditingCourse] = useState<{course: Course; courseId: string} | null>(null);
 
   const filtered = Object.fromEntries(
     Object.entries(courses).filter(([, c]) => c.term === selectedTerm)
@@ -31,7 +31,8 @@ const TermPage = ({ courses }: { courses: Courses }) => {
   if(editing){
     return (
       <CourseEditor
-        course = {editing}
+        course = {editing.course}
+        courseId = {editing.courseId}
         onCancel = {() => setEditingCourse(null)}
         onSubmit = {() => {}}
       />
@@ -50,7 +51,7 @@ const TermPage = ({ courses }: { courses: Courses }) => {
         courses={filtered}
         selectedCourses={selectedCourses}
         toggle={toggle}
-        onEdit={(course) => setEditingCourse(course)}
+        onEdit={(courseId, course) => setEditingCourse({course, courseId})}
       />
 
       <button

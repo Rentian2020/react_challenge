@@ -1,9 +1,8 @@
 import Banner from './components/Banner';
 import TermPage from './components/TermPage';
-import { useJsonQuery } from './utilities/fetch';
+import { useDataQuery } from './utilities/firebase';
 import type { Course } from './types/courses';
 
-const URL = "https://courses.cs.northwestern.edu/394/guides/data/cs-courses.php";
 
 type Schedule = {
   title: string;
@@ -11,7 +10,7 @@ type Schedule = {
 };
 
 const App = () => {
-  const [json, isLoading, error] = useJsonQuery(URL);
+  const [json, isLoading, error] = useDataQuery('/');
 
   if (error) return <h1>Error loading schedule: {`${error}`}</h1>;
   if (isLoading) return <h1>Loading schedule...</h1>;

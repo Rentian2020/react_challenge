@@ -1,0 +1,41 @@
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, update, onValue } from 'firebase/database';
+import { useEffect, useState } from "react";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBM2daL6o8eKzBKuudxWNk4r-Gl9qwvbrU",
+  authDomain: "studysync-8431e.firebaseapp.com",
+  databaseURL: "https://studysync-8431e-default-rtdb.firebaseio.com",
+  projectId: "studysync-8431e",
+  storageBucket: "studysync-8431e.firebasestorage.app",
+  messagingSenderId: "241056413733",
+  appId: "1:241056413733:web:896aa99e49c4d10005a7cc"
+};
+
+const firebase = initializeApp(firebaseConfig);
+const database = getDatabase(firebase);
+
+export const updateData = (path: string, value: object) => (
+  update(ref(database, path), value)
+);
+
+export const useDataQuery = (path: string): [unknown, boolean, Error | undefined] => {
+  const [data, setData] = useState<unknown>();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error>();
+
+  useEffect(() => {
+    setData(undefined);
+    setLoading(true);
+    setError(undefined);
+    return onValue(ref(database, path), (snapshot) => {
+      setData(snapshot.val());
+      setLoading(false);
+    }, (error) => {
+      setError(error);
+      setLoading(false);
+    });
+  }, [path]);
+
+  return [data, loading, error];
+};
