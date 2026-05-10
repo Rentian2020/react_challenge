@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, update, onValue } from 'firebase/database';
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut, type NextOrObserver, type User} from 'firebase/auth';
 import { useEffect, useState } from "react";
 
 const firebaseConfig = {
@@ -14,6 +15,14 @@ const firebaseConfig = {
 
 const firebase = initializeApp(firebaseConfig);
 const database = getDatabase(firebase);
+const auth = getAuth(firebase)
+const firebaseSignOut = () => signOut(auth);
+
+export const signInWithGoogle = () => {
+  signInWithPopup(auth, new GoogleAuthProvider());
+}
+
+export { firebaseSignOut as signOut};
 
 export const updateData = (path: string, value: object) => (
   update(ref(database, path), value)
@@ -38,4 +47,31 @@ export const useDataQuery = (path: string): [unknown, boolean, Error | undefined
   }, [path]);
 
   return [data, loading, error];
+};
+
+export interface AuthState {
+  user: User | null,
+  isAuthenticated: boolean,
+  isInitialLoading: boolean
+}
+
+export const addAuthStateListener = (fn: NextOrObserver<User>) => (
+  onAuthStateChanged(auth, fn)
+);
+
+export const useAuthState = (): AuthState => {
+  const [user, setUser] = useState(auth.currentUser);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const isAuthenticated = !!user;
+
+  useEffect(
+    () =>
+      addAuthStateListener((user) => {
+        setUser(user);
+        setIsInitialLoading(false);
+      }),
+    []
+  );
+
+  return { user, isAuthenticated, isInitialLoading };
 };
